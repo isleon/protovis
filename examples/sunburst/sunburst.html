@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>Sunburst</title>
+    <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="../ex.css"/>
     <script type="text/javascript" src="../../protovis.js"></script>
     <script type="text/javascript" src="keymap.js"></script>
@@ -12,6 +13,10 @@
   margin-top: 5px;
   height: 900px;
   text-align: center;
+}
+
+text {
+  font-size: 18px
 }
 
     </style>
@@ -25,7 +30,7 @@ var vis = new pv.Panel()
     .bottom(0);
 
 var partition = vis.add(pv.Layout.Partition.Fill)
-    .nodes(pv.dom(keymap).root("神算图").nodes())
+    .nodes(pv.dom(keymap['图形的性质']).root("神算图").nodes())
     .size(function(d) d.nodeValue)
     .order("descending")
     .orient("radial");
@@ -33,7 +38,9 @@ var partition = vis.add(pv.Layout.Partition.Fill)
 partition.node.add(pv.Wedge)
     .fillStyle(pv.Colors.category19().by(function(d) d.parentNode && d.parentNode.nodeName))
     .strokeStyle("#fff")
-    .lineWidth(.5);
+    .lineWidth(.5)
+    // .innerRadius(function() this.level * 100)
+    // .outerRadius(function() this.index * 10 + 30);
 
 partition.label.add(pv.Label)
     .visible(function(d) d.angle * d.outerRadius >= 6);

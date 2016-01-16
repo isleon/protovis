@@ -38,5 +38,6 @@ Network <|-- Arc
 Network <|-- Force
 Network <|-- Matrix
 Network <|-- Rollup
+Fill --|> Partition 
 
 @enduml
