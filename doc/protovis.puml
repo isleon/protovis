@@ -1,0 +1,42 @@
+@startuml
+
+'skinparam monochrome true
+'skinparam classBackgroundColor White
+skinparam classArrowColor Black
+skinparam classBorderColor Black
+skinparam stereotypeCBackgroundColor Gray
+'hide members
+hide circle
+
+class Mark
+Mark <|-- Anchor
+Mark <|-- Area
+Mark <|-- Bar
+Mark <|-- Dot
+Mark <|-- Image
+Mark <|-- Label
+Mark <|-- Line
+Mark <|-- Panel
+Mark <|-- Rule
+Mark <|-- Wedge
+
+class Layout
+Layout <|-- Hierarchy 
+Layout <|-- Network
+Layout <|-- Bullet
+Layout <|-- Grid
+Layout <|-- Horizon
+Layout <|-- Stack
+Layout <|-- Tree
+Hierarchy --|> Network
+Hierarchy <|-- Cluster
+Hierarchy <|-- Indent
+Hierarchy <|-- Pack
+Hierarchy <|-- Partition
+Hierarchy <|-- Treemap
+Network <|-- Arc
+Network <|-- Force
+Network <|-- Matrix
+Network <|-- Rollup
+
+@enduml
