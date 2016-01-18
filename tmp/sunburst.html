@@ -26,7 +26,7 @@ var data = [
   {value:1, color:'red'}, 
   {value:2, color:'green'}, 
   {value:3, color:'blue'}, 
-  {value:4, color:'gray'}, 
+  {value:4, color:'orange'}, 
 ]
 
 // 计算每个节点的角度和起始角度
@@ -81,6 +81,7 @@ function pieChart() {
             " Z";                       // Close path back to (cx,cy)
         path.setAttribute("d", dd); // Set this path 
         path.setAttribute("fill", d.color);
+        path.setAttribute("stroke", "rgb(255,255,255)")
         chart.appendChild(path); // Add wedge to chart
     };
 
