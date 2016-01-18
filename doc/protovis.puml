@@ -8,7 +8,29 @@ skinparam stereotypeCBackgroundColor Gray
 'hide members
 hide circle
 
-class Mark
+class Mark {
+    ~defaults : Mark
+    scene : []
+    -parent : Mark
+    -root : Mark
+    ~children : Mark[]
+    ~properties
+    index : int
+    ~childIndex : int
+    +scale : int
+    +sibling() : Mark
+    +property(name, cast) : this
+    +anchor(name)
+    +add(mark)
+    '+def(name, v)
+    ~bind(mark)
+    ~build() : this
+    +render()
+}
+
+class Wedge {
+    '-cousin()
+}
 Mark <|-- Anchor
 Mark <|-- Area
 Mark <|-- Bar
@@ -19,6 +41,8 @@ Mark <|-- Line
 Mark <|-- Panel
 Mark <|-- Rule
 Mark <|-- Wedge
+Mark -l-> SvgScene
+Mark .r.> Anchor
 
 class Layout
 Layout <|-- Hierarchy 
@@ -39,5 +63,27 @@ Network <|-- Force
 Network <|-- Matrix
 Network <|-- Rollup
 Fill --|> Partition 
+
+class colors
+colors <|-- category10
+colors <|-- category19
+colors <|-- category20
+
+class ordinal 
+
+class SvgScene {
+    -undefined : function
+    -svgns : string
+    +scale : 1
+    events : []
+    -implicit : {}
+    +updateAll(scenes)
+    +create(type) : HtmlElement
+    expect(e, type, attributes, style)
+    append(e, scenes, index)
+    title(e, s)
+    dispatch()
+    removeSiblings(e)
+}
 
 @enduml
