@@ -4,6 +4,7 @@
     <title>Sunburst</title>
     <meta charset="utf-8">
     <script type="text/javascript" src="keymap.js"></script>
+    <script type="text/javascript" src="sunburst.js"></script>
     <style type="text/css">
 
 #fig {
@@ -80,14 +81,13 @@ function calcNodes(nodes, startAngle, totalAngle) {
     }, startAngle)
 }
 
+root.startAngle = 0
+root.angle = Math.PI*2
+root.endAngle = Math.PI*2
 calcNodes(root.nodes, 0, Math.PI*2)
 console.log(root);
 
 var size = 200
-
-function create (type) { 
-  return document.createElementNS(svgns, type);
-}
 
 function drawPie(chart, d, radius) {
     // primary wedge
@@ -121,14 +121,14 @@ function pieChart() {
     // chart.setAttribute("viewBox", "0 0 " + size + " " + size);
 
     // Background circle
-    var back = document.createElementNS(svgns, "circle");
-    back.setAttribute("cx", size / 2);
-    back.setAttribute("cy", size / 2);
-    back.setAttribute("r",  size / 2);
+    // var back = document.createElementNS(svgns, "circle");
+    // back.setAttribute("cx", size / 2);
+    // back.setAttribute("cy", size / 2);
+    // back.setAttribute("r",  size / 2);
 
-    var color = "#d0d0d0";
-    back.setAttribute("fill", color);
-    chart.appendChild(back);
+    // var color = "#d0d0d0";
+    // back.setAttribute("fill", color);
+    // chart.appendChild(back);
 
     var nodes = root.nodes
     for (var i=0; i<nodes.length; i++) {
@@ -137,14 +137,15 @@ function pieChart() {
         }
         drawPie(chart, nodes[i], size / 4)
     };
+    drawPie(chart, root, size / 8)
 
     // foreground circle
-    var front = document.createElementNS(svgns, "circle");
-    front.setAttribute("cx", (size / 2));
-    front.setAttribute("cy", (size / 2));
-    front.setAttribute("r",  (size * 0.17 /2)); //about 34% as big as back circle 
-    front.setAttribute("fill", "#fff");
-    chart.appendChild(front);
+    // var front = document.createElementNS(svgns, "circle");
+    // front.setAttribute("cx", (size / 2));
+    // front.setAttribute("cy", (size / 2));
+    // front.setAttribute("r",  (size * 0.17 /2)); //about 34% as big as back circle 
+    // front.setAttribute("fill", "#fff");
+    // chart.appendChild(front);
     return chart;
 }
 
