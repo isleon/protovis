@@ -16,6 +16,7 @@
 
 text {
   font-size: 18px
+  font-fimily: 'Helvetica Neue';
 }
 
     </style>
@@ -28,6 +29,7 @@ var root = {
     level: 0,
     nodes:[
       {
+        label: '数与式',
         value:1, color:'red', level:1,
         nodes:[
             {value:1, color:'red'}, 
@@ -36,6 +38,7 @@ var root = {
         ]
       }, 
       {
+        label: '方程与不等式',
         value:2, color:'green', level:1,
         nodes:[
             {value:1, color:'red'}, 
@@ -44,6 +47,7 @@ var root = {
         ]
       }, 
       {
+        label: '函数',
         value:3, color:'blue', level:1,
         nodes:[
             {value:1, color:'red'}, 
@@ -52,6 +56,16 @@ var root = {
         ]
       }, 
       {
+        label: '图形的性质',
+        value:4, color:'orange', level:1,
+        nodes:[
+            {value:1, color:'red'}, 
+            {value:2, color:'green'}, 
+            {value:3, color:'blue'}
+        ]
+      }, 
+      {
+        label: '图形的变化',
         value:4, color:'orange', level:1,
         nodes:[
             {value:1, color:'red'}, 
@@ -62,7 +76,6 @@ var root = {
     ]
 };
 
-console.log(root);
 // console.log(partition(root));
 
 function pieChart() {
@@ -71,23 +84,37 @@ function pieChart() {
     chart.setAttribute("height", size);
     // chart.setAttribute("viewBox", "0 0 " + size + " " + size);
 
+    var gn = document.createElementNS(svgns, "g");
+    chart.appendChild(gn);
+
     var nodes = partition(root)
     for (var i=nodes.length-1; i>=0; i--) {
-        drawPie(chart, nodes[i])
+        var path = createPie(nodes[i])
+        gn.appendChild(path); // Add wedge to chart
     };
 
+    var gt = document.createElementNS(svgns, "g");
+    chart.appendChild(gt);
+
+    for (var i=root.nodes.length-1; i>=0; i--){
+        var text = createLabel(root.nodes[i])
+        gt.appendChild(text)
+    }
+    
+
     // foreground circle
-    var front = document.createElementNS(svgns, "circle");
-    front.setAttribute("cx", (size / 2));
-    front.setAttribute("cy", (size / 2));
-    front.setAttribute("r",  (size * 0.17 /2)); //about 34% as big as back circle 
-    front.setAttribute("fill", "#fff");
-    chart.appendChild(front);
+    // var front = document.createElementNS(svgns, "circle");
+    // front.setAttribute("cx", (size / 2));
+    // front.setAttribute("cy", (size / 2));
+    // front.setAttribute("r",  (size * 0.17 /2)); //about 34% as big as back circle 
+    // front.setAttribute("fill", "#fff");
+    // chart.appendChild(front);
+
     return chart;
 }
 
 var c = document.getElementById('container');
-c.appendChild( pieChart() );
+c.appendChild(pieChart());
 
     </script></body>
 </html>

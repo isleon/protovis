@@ -1,19 +1,21 @@
-var svgns = "http://www.w3.org/2000/svg";
-var radiuses = [100, 200, 300]
+var svgns = 'http://www.w3.org/2000/svg';
+// var radiuses = [100, 200, 300]
 
 function partition(root) {
+    root.level = 0
     root.startAngle = 0
     root.angle = Math.PI*2
     root.endAngle = Math.PI*2
+
     calcNodes(root.nodes, 0, Math.PI*2)
 
-    root.level = 0
     var nodes = []
     push(nodes, root)
     return nodes
 }
 
 function push(nodes, parent) {
+    parent.radius = (parent.level+1)*size/8
     nodes.push(parent)
     if (!parent.nodes) return;
 
@@ -39,15 +41,14 @@ function calcNodes(nodes, startAngle, totalAngle) {
     }, startAngle)
 }
 
+var size = 800
 
-var size = 200
-
-function drawPie(chart, d) {
+function createPie(d) {
     // primary wedge
-    var path = document.createElementNS(svgns, "path");
+    var path = document.createElementNS(svgns, 'path');
     var startAngle = d.startAngle;
     var endAngle = d.endAngle;
-    var radius = (d.level+1)*25
+    var radius = d.radius
 
     var x1 = 0 + radius * Math.sin(startAngle);
     var y1 = 0 - radius * Math.cos(startAngle);
@@ -55,16 +56,33 @@ function drawPie(chart, d) {
     var y2 = 0 - radius * Math.cos(endAngle);
     var big = (endAngle - startAngle > Math.PI) ? 1 : 0;
 
-    var dd = "M 0,0" +  // Start at circle center
-        " L " + x1 + "," + y1 +     // Draw line to (x1,y1)
-        " A " + radius + "," + radius +       // Draw an arc of radius r
-        " 0 " + big + " 1 " +       // Arc details...
-        x2 + "," + y2 +             // Arc goes to to (x2,y2)
-        " Z";                       // Close path back to (cx,cy)
-    path.setAttribute("d", dd); // Set this path 
-    path.setAttribute("fill", d.color);
-    path.setAttribute("stroke", "rgb(255,255,255)")
-    path.setAttribute("stroke-width", 1)
-    path.setAttribute("transform", "translate("+size/2+","+size/2+")")
-    chart.appendChild(path); // Add wedge to chart
+    var dd = 'M 0,0' +  // Start at circle center
+        ' L ' + x1 + ',' + y1 +     // Draw line to (x1,y1)
+        ' A ' + radius + ',' + radius +       // Draw an arc of radius r
+        ' 0 ' + big + ' 1 ' +       // Arc details...
+        x2 + ',' + y2 +             // Arc goes to to (x2,y2)
+        ' Z';                       // Close path back to (cx,cy)
+    path.setAttribute('d', dd); // Set this path 
+    path.setAttribute('fill', d.color);
+    path.setAttribute('stroke', 'rgb(255,255,255)')
+    path.setAttribute('stroke-width', 1)
+    path.setAttribute('transform', 'translate('+size/2+','+size/2+')')
+    return path
+}
+
+function createLabel(d) {
+    var degree = 360*(d.startAngle+d.endAngle)/(4*Math.PI) - 90
+    var cx = size/2 + d.radius*Math.sin(d.endAngle)/2
+    var cy = size/2 - d.radius*Math.cos(d.endAngle)/2
+
+    var text = document.createElementNS(svgns, 'text')
+    text.setAttribute('pointer-events', 'none')
+    text.setAttribute('fill', 'rgb(0,0,0)')
+    text.setAttribute('text-anchor', 'middle')
+    text.setAttribute('transform',  'translate('+cx+','+cy+')' + ' rotate('+degree+')')
+
+    if (text.firstChild) text.firstChild.nodeValue = d.label;
+    else text.appendChild(document.createTextNode(d.label));
+
+    return text
 }

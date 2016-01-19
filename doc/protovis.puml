@@ -79,11 +79,22 @@ class SvgScene {
     -implicit : {}
     +updateAll(scenes)
     +create(type) : HtmlElement
-    expect(e, type, attributes, style)
+    ~expect(e, type, attributes, style)
     append(e, scenes, index)
     title(e, s)
     dispatch()
     removeSiblings(e)
 }
+SvgScene <|-- SvgArea
+SvgScene <|-- SvgBar
+SvgScene <|-- SvgCurve
+SvgScene <|-- SvgDot
+SvgScene <|-- SvgImage
+SvgScene <|-- SvgLabel
+SvgScene <|-- SvgLine
+SvgScene <|-- SvgPanel
+SvgScene <|-- SvgRule
+SvgScene <|-- SvgWedge
+
 
 @enduml
