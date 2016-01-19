@@ -75,6 +75,7 @@ function createLabel(d) {
     var cx = size/2 + d.radius*Math.sin(ma)/2
     var cy = size/2 - d.radius*Math.cos(ma)/2
     var dg = 180*ma/Math.PI + 90
+    if (dg < 270) dg += 180 
 
     var text = document.createElementNS(svgns, 'text')
     text.setAttribute('pointer-events', 'none')
