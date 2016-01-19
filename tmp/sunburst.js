@@ -1,4 +1,5 @@
 var svgns = 'http://www.w3.org/2000/svg';
+var size = 800
 // var radiuses = [100, 200, 300]
 
 function partition(root) {
@@ -16,6 +17,7 @@ function partition(root) {
 
 function push(nodes, parent) {
     parent.radius = (parent.level+1)*size/8
+
     nodes.push(parent)
     if (!parent.nodes) return;
 
@@ -40,8 +42,6 @@ function calcNodes(nodes, startAngle, totalAngle) {
         return d.endAngle
     }, startAngle)
 }
-
-var size = 800
 
 function createPie(d) {
     // primary wedge
@@ -71,15 +71,16 @@ function createPie(d) {
 }
 
 function createLabel(d) {
-    var degree = 360*(d.startAngle+d.endAngle)/(4*Math.PI) - 90
-    var cx = size/2 + d.radius*Math.sin(d.endAngle)/2
-    var cy = size/2 - d.radius*Math.cos(d.endAngle)/2
+    var ma = (d.startAngle+d.endAngle)/2 //中间角度
+    var cx = size/2 + d.radius*Math.sin(ma)/2
+    var cy = size/2 - d.radius*Math.cos(ma)/2
+    var dg = 180*ma/Math.PI + 90
 
     var text = document.createElementNS(svgns, 'text')
     text.setAttribute('pointer-events', 'none')
     text.setAttribute('fill', 'rgb(0,0,0)')
     text.setAttribute('text-anchor', 'middle')
-    text.setAttribute('transform',  'translate('+cx+','+cy+')' + ' rotate('+degree+')')
+    text.setAttribute('transform',  'translate('+cx+','+cy+')' + 'rotate('+dg+')')
 
     if (text.firstChild) text.firstChild.nodeValue = d.label;
     else text.appendChild(document.createTextNode(d.label));
