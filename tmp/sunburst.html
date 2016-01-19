@@ -64,33 +64,23 @@ var root = {
 var svgns = "http://www.w3.org/2000/svg";
 var radiuses = [100, 200, 300]
 
-var nodes = root.nodes
-var totalAngle = Math.PI*2
-var startAngle = 0
 
-// 计算每个节点的角度和起始角度
-var sum = nodes.reduce(function(s, d){ return s+d.value }, 0)
-nodes.forEach(function(d, i) {d.angle = totalAngle * d.value/sum})
-nodes.reduce(function(s, d){
-    d.startAngle = s
-    d.endAngle = d.startAngle + d.angle
-    return d.endAngle
-}, startAngle)
+function calcNodes(nodes, startAngle, totalAngle) {
+    if (!nodes) return
 
-nodes.forEach(function(c, i){
-    var nodes = c.nodes
-    var totalAngle = c.angle
-    var startAngle = c.startAngle
     // 计算每个节点的角度和起始角度
     var sum = nodes.reduce(function(s, d){ return s+d.value }, 0)
     nodes.forEach(function(d, i) {d.angle = totalAngle * d.value/sum})
     nodes.reduce(function(s, d){
         d.startAngle = s
         d.endAngle = d.startAngle + d.angle
+        calcNodes(d.nodes, d.startAngle, d.angle)
+
         return d.endAngle
     }, startAngle)
-})
+}
 
+calcNodes(root.nodes, 0, Math.PI*2)
 console.log(root);
 
 var size = 200
@@ -120,7 +110,7 @@ function drawPie(chart, d, radius) {
     path.setAttribute("fill", d.color);
     path.setAttribute("stroke", "rgb(255,255,255)")
     path.setAttribute("stroke-width", 1)
-    path.setAttribute("transform", "translate(100,100)")
+    path.setAttribute("transform", "translate("+size/2+","+size/2+")")
     chart.appendChild(path); // Add wedge to chart
 }
 
@@ -140,8 +130,8 @@ function pieChart() {
     back.setAttribute("fill", color);
     chart.appendChild(back);
 
+    var nodes = root.nodes
     for (var i=0; i<nodes.length; i++) {
-
         for (var j=0; j<nodes[i].nodes.length; j++) {
             drawPie(chart, nodes[i].nodes[j], size/2)
         }
