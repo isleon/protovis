@@ -50,17 +50,17 @@ function createPie(d) {
     var endAngle = d.endAngle;
     var radius = d.radius
 
-    var x1 = 0 + radius * Math.sin(startAngle);
-    var y1 = 0 - radius * Math.cos(startAngle);
-    var x2 = 0 + radius * Math.sin(endAngle);
-    var y2 = 0 - radius * Math.cos(endAngle);
+    var x1 = 0 + radius * Math.cos(startAngle);
+    var y1 = 0 - radius * Math.sin(startAngle);
+    var x2 = 0 + radius * Math.cos(endAngle);
+    var y2 = 0 - radius * Math.sin(endAngle);
     var big = (endAngle - startAngle > Math.PI) ? 1 : 0;
 
     var dd = 'M 0,0' +  // Start at circle center
-        ' L ' + x1 + ',' + y1 +     // Draw line to (x1,y1)
+        ' L ' + x2 + ',' + y2 +     // Draw line to (x1,y1)
         ' A ' + radius + ',' + radius +       // Draw an arc of radius r
         ' 0 ' + big + ' 1 ' +       // Arc details...
-        x2 + ',' + y2 +             // Arc goes to to (x2,y2)
+        x1 + ',' + y1 +             // Arc goes to to (x2,y2)
         ' Z';                       // Close path back to (cx,cy)
     path.setAttribute('d', dd); // Set this path 
     path.setAttribute('fill', d.color);
@@ -72,10 +72,10 @@ function createPie(d) {
 
 function createLabel(d) {
     var ma = (d.startAngle+d.endAngle)/2 //中间角度
-    var cx = size/2 + d.radius*Math.sin(ma)/2
-    var cy = size/2 - d.radius*Math.cos(ma)/2
-    var dg = 180*ma/Math.PI + 90
-    if (dg < 270) dg += 180 
+    var cx = size/2 + d.radius*Math.cos(ma)/2
+    var cy = size/2 - d.radius*Math.sin(ma)/2
+    var dg = 360-180*ma/Math.PI
+    if (dg > 90 && dg<270) dg += 180 
 
     var text = document.createElementNS(svgns, 'text')
     text.setAttribute('pointer-events', 'none')
