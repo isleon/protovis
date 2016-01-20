@@ -77,45 +77,7 @@ var root = {
     ]
 };
 
-// console.log(partition(root));
-
-function pieChart() {
-    var chart = document.createElementNS(svgns, "svg");
-    chart.setAttribute("width", size);
-    chart.setAttribute("height", size);
-    // chart.setAttribute("viewBox", "0 0 " + size + " " + size);
-
-    var gn = document.createElementNS(svgns, "g");
-    chart.appendChild(gn);
-
-    var nodes = partition(root)
-    for (var i=nodes.length-1; i>=0; i--) {
-        var path = createPie(nodes[i])
-        gn.appendChild(path); // Add wedge to chart
-    };
-
-    var gt = document.createElementNS(svgns, "g");
-    chart.appendChild(gt);
-
-    for (var i=root.nodes.length-1; i>=0; i--){
-        var text = createLabel(root.nodes[i])
-        gt.appendChild(text)
-    }
-    
-
-    // foreground circle
-    // var front = document.createElementNS(svgns, "circle");
-    // front.setAttribute("cx", (size / 2));
-    // front.setAttribute("cy", (size / 2));
-    // front.setAttribute("r",  (size * 0.17 /2)); //about 34% as big as back circle 
-    // front.setAttribute("fill", "#fff");
-    // chart.appendChild(front);
-
-    return chart;
-}
-
-var c = document.getElementById('container');
-c.appendChild(pieChart());
+Sunburst('container', root, 800)
 
     </script></body>
 </html>
