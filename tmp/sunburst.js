@@ -1,24 +1,27 @@
 var svgns = 'http://www.w3.org/2000/svg';
-// var radiuses = [100, 200, 300]
 
 function Sunburst(container, data, size) {
-    var chart = document.createElementNS(svgns, "svg");
-    chart.setAttribute("width", size);
-    chart.setAttribute("height", size);
-    // chart.setAttribute("viewBox", "0 0 " + size + " " + size);
+    var svg = document.createElementNS(svgns, 'svg');
+    svg.setAttribute('width', size);
+    svg.setAttribute('height', size);
+    // svg.setAttribute('viewBox', '0 0 ' + size + ' ' + size);
 
-    var gn = document.createElementNS(svgns, "g");
-    gn.setAttribute('transform', 'translate('+size/2+','+size/2+')')
-    chart.appendChild(gn);
+    var gr = document.createElementNS(svgns, 'g');
+    gr.setAttribute('transform', 'translate('+size/2+','+size/2+')')
+    svg.appendChild(gr);
+
+    var gn = document.createElementNS(svgns, 'g');
+    // gn.setAttribute('transform', 'translate('+size/2+','+size/2+')')
+    gr.appendChild(gn);
 
     var nodes = partition(root)
     for (var i=nodes.length-1; i>=0; i--) {
         var path = createPie(nodes[i])
-        gn.appendChild(path); // Add wedge to chart
+        gn.appendChild(path); // Add wedge to svg
     };
 
-    var gt = document.createElementNS(svgns, "g");
-    chart.appendChild(gt);
+    var gt = document.createElementNS(svgns, 'g');
+    gr.appendChild(gt);
 
     for (var i=root.nodes.length-1; i>=0; i--){
         var text = createLabel(root.nodes[i])
@@ -26,7 +29,7 @@ function Sunburst(container, data, size) {
     }
 
     var c = document.getElementById(container);
-    c.appendChild(chart);
+    c.appendChild(svg);
 
     function partition(root) {
         root.level = 0
@@ -98,8 +101,8 @@ function Sunburst(container, data, size) {
 
     function createLabel(d) {
         var ma = (d.startAngle+d.endAngle)/2 //中间角度
-        var cx = size/2 + d.radius*Math.cos(ma)/2
-        var cy = size/2 - d.radius*Math.sin(ma)/2
+        var cx = 0 + d.radius*Math.cos(ma)/2
+        var cy = 0 - d.radius*Math.sin(ma)/2
         var dg = 360-180*ma/Math.PI
         if (dg > 90 && dg<270) dg += 180 
 
